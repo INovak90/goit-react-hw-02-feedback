@@ -1,27 +1,24 @@
-import { Button } from './Feedback.styled';
+import css from './Fedback.module.css';
 import PropTypes from 'prop-types';
-export const Feedback = ({ items, leaveFeedback }) => {
-  const getKeys = Object.keys(items);
+export const FeedbackOptions = ({ options, onLeaveFeedback }) => {
+  const getKeys = Object.keys(options);
 
   return getKeys.map(name => (
     <li key={name}>
-      <Button
+      <button
+        className={css['feedback-button']}
         onClick={() => {
-          leaveFeedback(name);
+          onLeaveFeedback(name);
         }}
         type="button"
       >
         {name}
-      </Button>
+      </button>
     </li>
   ));
 };
 
-Feedback.propTypes = {
-  items: PropTypes.shape({
-    good: PropTypes.number.isRequired,
-    neutral: PropTypes.number.isRequired,
-    bad: PropTypes.number.isRequired,
-  }),
-  leaveFeedback: PropTypes.func.isRequired,
+FeedbackOptions.propTypes = {
+  options: PropTypes.objectOf(PropTypes.number.isRequired).isRequired,
+  onLeaveFeedback: PropTypes.func.isRequired,
 };

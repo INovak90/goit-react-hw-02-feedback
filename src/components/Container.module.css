@@ -1,9 +1,11 @@
-import styled from 'styled-components';
-
-export const ListButton = styled.ul`
+.container {
+  padding: 20px;
+  text-align: center;
+}
+.list-button {
   display: flex;
   justify-content: center;
   gap: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
-`;
+}

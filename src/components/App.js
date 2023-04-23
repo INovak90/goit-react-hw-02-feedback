@@ -1,9 +1,9 @@
 import { Component } from 'react';
-import { Feedback } from './Feedback/Feedback';
+import { FeedbackOptions } from './Feedback/Feedback';
 import { Statistics } from './Statistics/Statistics';
-import { GlobalStyle } from './GlobalStyle';
-import { Container } from './Container/Container';
-import { ListButton } from './ListButton.styled';
+import { Section } from './Section/Section';
+import { Notification } from './Notification/Notification';
+import css from './Container.module.css';
 
 export class App extends Component {
   state = {
@@ -11,7 +11,7 @@ export class App extends Component {
     neutral: 0,
     bad: 0,
   };
-  leaveFeedback = name => {
+  onLeaveFeedback = name => {
     const getKeys = Object.keys(this.state);
     if (getKeys.includes(name)) {
       this.setState(prevState => {
@@ -19,17 +19,35 @@ export class App extends Component {
       });
     }
   };
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state;
+    const total = good + neutral + bad;
+
+    return total;
+  };
+  countPositiveFeedbackPercentage = (callback, el) => {
+    return callback() ? Math.round((el / callback()) * 100) : '0';
+  };
 
   render = () => (
-    <Container>
-      <GlobalStyle />
-      <h1>Please leave feedback</h1>
-      <ListButton>
-        <Feedback items={this.state} leaveFeedback={this.leaveFeedback} />
-      </ListButton>
-      {this.state.good + this.state.neutral + this.state.bad !== 0 && (
-        <Statistics items={this.state} />
-      )}
-    </Container>
+    <div className={css.container}>
+      <Section>
+        <ul className={css['list-button']}>
+          <FeedbackOptions
+            options={this.state}
+            onLeaveFeedback={this.onLeaveFeedback}
+          />
+        </ul>
+        {this.state.good + this.state.neutral + this.state.bad !== 0 ? (
+          <Statistics
+            options={this.state}
+            total={this.countTotalFeedback}
+            positivePercentage={this.countPositiveFeedbackPercentage}
+          />
+        ) : (
+          <Notification />
+        )}
+      </Section>
+    </div>
   );
 }
