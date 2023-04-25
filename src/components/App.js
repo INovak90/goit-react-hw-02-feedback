@@ -11,10 +11,10 @@ export class App extends Component {
     neutral: 0,
     bad: 0,
   };
-  getKeys =  Object.keys(this.state);
+  getKeys = () => Object.keys(this.state);
 
   onLeaveFeedback = name => {
-    if (this.getKeys.includes(name)) {
+    if (this.getKeys().includes(name)) {
       this.setState(prevState => {
         return { [name]: prevState[name] + 1 };
       });
@@ -35,7 +35,7 @@ export class App extends Component {
       <Section>
         <ul className={css['list-button']}>
           <FeedbackOptions
-            options={this.getKeys}
+            options={this.getKeys()}
             onLeaveFeedback={this.onLeaveFeedback}
           />
         </ul>
