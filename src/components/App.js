@@ -11,9 +11,10 @@ export class App extends Component {
     neutral: 0,
     bad: 0,
   };
+  getKeys =  Object.keys(this.state);
+
   onLeaveFeedback = name => {
-    const getKeys = Object.keys(this.state);
-    if (getKeys.includes(name)) {
+    if (this.getKeys.includes(name)) {
       this.setState(prevState => {
         return { [name]: prevState[name] + 1 };
       });
@@ -25,8 +26,8 @@ export class App extends Component {
 
     return total;
   };
-  countPositiveFeedbackPercentage = (callback, el) => {
-    return callback() ? Math.round((el / callback()) * 100) : '0';
+  countPositiveFeedbackPercentage = (total, el) => {
+    return total ? Math.round((el / total) * 100) : '0';
   };
 
   render = () => (
@@ -34,18 +35,18 @@ export class App extends Component {
       <Section>
         <ul className={css['list-button']}>
           <FeedbackOptions
-            options={this.state}
+            options={this.getKeys}
             onLeaveFeedback={this.onLeaveFeedback}
           />
         </ul>
         {this.state.good + this.state.neutral + this.state.bad !== 0 ? (
           <Statistics
             options={this.state}
-            total={this.countTotalFeedback}
+            countTotalFeedback={this.countTotalFeedback}
             positivePercentage={this.countPositiveFeedbackPercentage}
           />
         ) : (
-          <Notification />
+          <Notification message="There is no feedback" />
         )}
       </Section>
     </div>
